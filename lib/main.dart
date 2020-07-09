@@ -1,12 +1,18 @@
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:todo_list_app/new_items_veiw.dart';
 import 'package:todo_list_app/todo.dart';
 
-void main() => runApp(Main());
+void main() {
+  runApp(Main());
+}
 
-class Main extends StatelessWidget {
+class Main extends StatefulWidget {
+  @override
+  _MainState createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +30,7 @@ class Home extends StatefulWidget {
   HomeState createState() => HomeState();
 }
 
-class HomeState extends State<Home> with SingleTickerProviderStateMixin{
+class HomeState extends State<Home>{
   List<Todo> items = new List<Todo>();
 
   @override
@@ -39,7 +45,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () =>goToNewItemView(),
+          onPressed: () {
+            setState(() {
+              goToNewItemView();
+            });
+            },
         ),
         body: renderBody()
     );
@@ -72,7 +82,17 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   Widget buildItem(Todo item, index){
     return Dismissible(
       key: Key('${item.hashCode}'),
-      background: Container(color: Colors.greenAccent[700]),
+      background: Container(
+          color: Colors.greenAccent[200],
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 10,),
+                  Icon(Icons.delete,
+                  color: Colors.white,
+                  ),
+                ],
+              ),
+      ),
       onDismissed: (direction) => _removeItemFromList(item),
       direction: DismissDirection.startToEnd,
       child: buildListTile(item, index),
@@ -116,7 +136,9 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   }
 
   void addItem(Todo item){
-    items.insert(0, item);
+    setState(() {
+      items.insert(0, item);
+    });
   }
 
   void goToEditItemView(item){
@@ -134,7 +156,9 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin{
   }
 
   void _removeItemFromList(item) {
-    deleteItem(item);
+    setState(() {
+      deleteItem(item);
+    });
   }
 
   void deleteItem(item){

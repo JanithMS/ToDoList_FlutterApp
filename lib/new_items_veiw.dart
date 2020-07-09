@@ -52,13 +52,16 @@ class _NewTodoViewState extends State<NewTodoView> {
                     color: Theme.of(context).primaryTextTheme.title.color
                 ),
               ),
-              onPressed: () => submit(),
+              onPressed: () {
+                submit();
+              },
             )
-          ],
+         ],
         ),
       ),
     );
   }
+
 
   void submit(){
     Navigator.of(context).pop(titleController.text);
